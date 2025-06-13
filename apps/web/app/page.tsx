@@ -1,18 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   const [latex, setLatex] = useState('');
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   const handleCompile = async () => {
     setLoading(true);
     setPdfUrl(null);
 
     try {
-      const res = await fetch('http://localhost:3000/compile', {
+      const res = await fetch(`${backendUrl}/compile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,13 +66,13 @@ export default function Home() {
         />
 
         <div className="mt-6 flex flex-wrap gap-4 justify-center">
-          <button
+          <Button
             onClick={handleCompile}
             disabled={loading}
             className="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-full shadow-md hover:bg-indigo-100 transition duration-200 disabled:opacity-50"
           >
             {loading ? 'Compiling...' : 'Compile to PDF'}
-          </button>
+          </Button>
 
           {pdfUrl && (
             <>
